@@ -9,13 +9,6 @@ class Application(Frame):
         self.place(relx = 0.5, rely = 0.5, anchor=CENTER)
         self.createWidgets()
 
-    # def get_date_format(self):
-    #     today = str(date.today())
-    #     for _ in range(2):
-    #         print("x")
-    #         today = today.replace("/", "")
-    #     return today
-
     def show_codes(self):
         msg = messagebox.showinfo("Currency Codes", """
         01	דולר​	ארצות הברית​
