@@ -1,12 +1,5 @@
 import requests
 
-# def get_date_format(self):
-#     today = str(date.today())
-#     for _ in range(2):
-#         print("x")
-#         today = today.replace("/", "")
-#     return today
-
 class Currency:
     """
     TODO:
@@ -44,5 +37,5 @@ class Currency:
         line = line.replace("</RATE>", "")
         return line
 
-USD = Currency("01", "20200902")
-print(USD.get_value(USD.get_currency()))
+# USD = Currency("01", "20200902")
+# print(USD.get_value(USD.get_currency()))
