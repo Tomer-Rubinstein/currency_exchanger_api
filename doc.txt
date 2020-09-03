@@ -1,0 +1,9 @@
+This project scrapes the value of usd & euro in ils format and can filter it by inputs + features:
+1. Date, what value where USD/EURO at DD/MM/YYYY date?
+2. Default Settings: curr1 = {Date: "DD/MM/YYYY", Currency: "USD"}, curr2 = {Date: "DD/MM/YYYY", Currency: "EUR"}
+   * You can change these settings *
+3. Easy COPY button + result can be marked and copied.
+
+Goto https://www.boi.org.il/he/Markets/Pages/explainxml.aspx for full explaination.
+
+
