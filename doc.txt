@@ -7,3 +7,4 @@ This project scrapes the value of usd & euro in ils format and can filter it by 
 Goto https://www.boi.org.il/he/Markets/Pages/explainxml.aspx for full explaination.
 
 
+
