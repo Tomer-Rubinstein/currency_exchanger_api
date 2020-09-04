@@ -64,8 +64,6 @@ def send():
         return render_template("homepage.html", value=res)
     return render_template("homepage.html", value=res)
 
-
-
 @app.route("/showCodes")
 def showCodes():
     # https://www.boi.org.il/currency.xml scrape data from here.
