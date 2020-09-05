@@ -6,5 +6,12 @@ This project scrapes the value of usd & euro in ils format and can filter it by 
 
 Goto https://www.boi.org.il/he/Markets/Pages/explainxml.aspx for full explaination.
 
+TODO:
+- Add default value to the date input, today's date. Because if date is null, server will return 500 error [DONE]
+- Add the "Shekel" symbol [DONE]
 
+- Add dropdown instead of having to write down each code (using the name -> convert to the id) [DEL]
+- Add section of today's most popular currencies worths.
+
+- Make sure to publish on debug=False
 

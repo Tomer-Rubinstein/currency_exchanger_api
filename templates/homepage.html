@@ -99,17 +99,39 @@
             </table>
             <form method="POST" action="/send">
                 <input type="number" class="c_code" name="c_code" value="01">
-                
+                <!-- <select class="c_code" name="c_code" style="width: 100px; text-align-last: center;">
+                    {% for x in _codes %}
+                        <option>{{x}}</option>
+                    {% endfor %}
+                </select> -->
+
                 <br><br>
                 <hr style="border-color: lightslategray; border-width: 1px; border-style: solid; width: 550px;">
                 <h1>Date</h1>
 
-                <input type="date" class="c_code" name="date" pattern="yyyy mm dd"><br>
+                <input type="date" class="c_code" name="date" pattern="yyyy mm dd" value={{today}} max={{today}} id="datefield"><br>
+                <script>
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth()+1;
+                    var yyyy = today.getFullYear();
+                    if(dd<10){
+                            dd='0'+dd
+                        } 
+                        if(mm<10){
+                            mm='0'+mm
+                        } 
+
+                    today = yyyy+'-'+mm+'-'+dd;
+                    document.getElementById("datefield").setAttribute("max", today);
+                </script>
             
                 <input type="submit", class="submit_btn" value="Search">
             </form>
             <p class="result">{{ value }}</p>
-            <p style="color: azure;">{{ new_date }}</p>
+            <p style="color: azure;">
+                {{ new_date }}
+            </p>
         </div>
     </body>
 </html>

@@ -4,6 +4,22 @@ from datetime import timedelta, datetime
 import requests
 
 app = Flask(__name__)
+codes = [
+    "​01",
+    "02​",
+    "31",
+    "27​",
+    "18",
+    "06",
+    "12​",
+    "28​",
+    "17​",
+    "03​",
+    "05​",
+    "69​",
+    "70​",
+    "79",
+]
 
 months = {
     "1": "Jan",
@@ -22,67 +38,54 @@ months = {
 
 @app.route("/")
 def homepage():
-    return render_template("homepage.html", value="")
+    return render_template("homepage.html", value="", today=str(datetime.today()))
 
 @app.route("/send", methods=['GET', 'POST'])
 def send():
-    if request.method == "POST":
-        prev_state = request.form["date"].split("-")
-        fdate = request.form["date"]
-        c_code = request.form["c_code"]
+    fdate = request.form["date"]
+    #c_code = str(request.form.get("c_code"))
+    c_code = request.form["c_code"]
+    if fdate.strip() == "" or c_code.strip() == "" or fdate == None or c_code == None:
+        print(datetime.today())
+        return render_template("homepage.html")
+    else:
+        if request.method == "POST":
+            prev_state = request.form["date"].split("-")
 
-        for _ in range(2):
-            fdate = fdate.replace("-", "")
+            for _ in range(2):
+                fdate = fdate.replace("-", "")
+            USD = Currency(c_code, fdate)
+            res = USD.get_value(USD.get_currency())
 
-        USD = Currency(c_code, fdate)
-        res = USD.get_value(USD.get_currency())
+            if res == None or res == "" or res == " ":
+                for _ in range(6):
+                    if res == None or res == "" or res == " ":
+                        # Subtract Date By 1
+                        m_num = str(int(prev_state[1]))
+                        m = months[m_num]
+                        full_date = f"{m} {prev_state[-1]} {prev_state[0]}"
+                        c = datetime.strptime(full_date, "%b %d %Y")
+                        d = str(c - timedelta(days=_))
 
-        if res == None or res == "" or res == " ":
-            for _ in range(3):
-                if res == None or res == "" or res == " ":
-                    # Subtract Date By 1
-                    m_num = str(int(prev_state[1]))
-                    m = months[m_num]
-                    full_date = f"{m} {prev_state[-1]} {prev_state[0]}"
-                    c = datetime.strptime(full_date, "%b %d %Y")
-                    d = str(c - timedelta(days=_))
-                    print(f"{_}: {d}")
+                        for x in range(2):
+                            d = d.replace("-", "")
 
-                    for x in range(2):
-                        d = d.replace("-", "")
+                        d = d[:8]
+                        # Get Value, if None: run again.
+                        USD = Currency(c_code, d)
+                        res = USD.get_value(USD.get_currency())
 
-                    d = d[:8]
-
-                    # Get Value, if None: run again.
-                    USD = Currency(c_code, d)
-                    res = USD.get_value(USD.get_currency())
-                    
-                    # check if need to render yet again
-                else:
-                    return render_template("homepage.html", value=res + "₪", new_date=f"({str(c - timedelta(days=_))[:10]}) YYYY-MM-DD")
-
-        return render_template("homepage.html", value=res)
-    return render_template("homepage.html", value=res)
+                        # check if need to render yet again
+                    else:
+                        return render_template("homepage.html", value=res+"₪", new_date=f"({str(c - timedelta(days=_))[:10]}) YYYY-MM-DD", _codes=codes)
+            prev_state = "-".join(prev_state)
+            return render_template("homepage.html", value=res+"₪", _codes=codes, new_date=f"({prev_state}) YYYY-MM-DD",)
+        return render_template("homepage.html", value=res+"₪", _codes=codes, new_date=f"({str(c - timedelta(days=_))[:10]}) YYYY-MM-DD",)
 
 @app.route("/showCodes")
 def showCodes():
     # https://www.boi.org.il/currency.xml scrape data from here.
-    codes = [
-        "​01",
-        "02​",
-        "31",
-        "27​",
-        "18",
-        "06",
-        "12​",
-        "28​",
-        "17​",
-        "03​",
-        "05​",
-        "69​",
-        "70​",
-        "79",
-    ]
+
     names = []
     state = []
     r = requests.get("https://www.boi.org.il/currency.xml")
@@ -99,4 +102,4 @@ def showCodes():
     return render_template("showCodes.html", names=names, state=state, codes=codes, length=len(names))
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False)
